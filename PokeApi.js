@@ -1,71 +1,112 @@
-const listaPokemon = document.querySelector("#listaPokemon");
-const botonesHeader = document.querySelectorAll(".btn-header");
-let URL = "https://pokeapi.co/api/v2/pokemon/";
+window.onload = function () {
+    const tipoSelect = document.querySelector("#tipoSelect");
+    const generacionSelect = document.querySelector("#generacionSelect");
+    const listaPokemon = document.querySelector("#listaPokemon");
 
-for (let i = 1; i<=1025; i++){
-    fetch (URL+ i)
-    .then((response) => response.json())
-    .then(data => mostrarPokemon(data));
-}
+    // Cargar tipos
+    fetch("https://pokeapi.co/api/v2/type/")
+        .then(res => res.json())
+        .then(data => {
+            data.results
+                .filter(tipo => tipo.name !== 'stellar' && tipo.name !== 'unknown')
+                .forEach(tipo => {
+                    const option = document.createElement("option");
+                    option.value = tipo.name;
+                    option.textContent = tipo.name.charAt(0).toUpperCase() + tipo.name.slice(1);
+                    option.classList.add(tipo.name);
+                    tipoSelect.appendChild(option);
+                });
+        });
 
-function mostrarPokemon(poke){
-    let tipos = poke.types.map((type) => `<p class="${type.type.name} tipo">${type.type.name}</p>`);
-    tipos = tipos.join('')
-    console.log(poke);
-    
-    let pokeId = poke.id.toString();
-    if(pokeId.length === 1){
-        pokeId ="00" + pokeId;
-    } else if (pokeId.length ===2){
-        pokeId = "0" + pokeId
+    // Cargar generaciones
+    fetch("https://pokeapi.co/api/v2/generation/")
+        .then(res => res.json())
+        .then(data => {
+            data.results.forEach(gen => {
+                const option = document.createElement("option");
+                option.value = gen.name;
+                option.textContent = gen.name.charAt(0).toUpperCase() + gen.name.slice(1);
+                generacionSelect.appendChild(option);
+            });
+        });
+
+    function mostrarPokemon(poke) {
+        let tipos = poke.types.map(type => `<p class="${type.type.name} tipo">${type.type.name}</p>`).join('');
+        let pokeId = poke.id.toString().padStart(3, '0');
+        const div = document.createElement("div");
+        div.classList.add("pokemon");
+        div.innerHTML = `
+            <p class="pokemon-id-back">#${pokeId}</p>
+            <div class="pokemon-imagen">
+                <img src="${poke.sprites.front_default}" alt="${poke.name}">
+            </div>
+            <div class="pokemon-info">
+                <div class="nombre-contenedor">
+                    <p class="pokemon-id">#${pokeId}</p>
+                    <h2 class="pokemon-nombre">${poke.name}</h2>
+                </div>
+                <div class="pokemon-tipos">${tipos}</div>
+                <div class="pokemon-stats">
+                    <p class="stat">${poke.height}m</p>
+                    <p class="stat">${poke.weight}kg</p>
+                    <p class="stat">LV0 Stat: ${poke.stats[0].base_stat}</p>
+                    <p class="stat">LV1 Stat: ${poke.stats[1].base_stat}</p>
+                </div>
+            </div>
+        `;
+        listaPokemon.append(div);
     }
 
+    async function cargarFiltrado() {
+        listaPokemon.innerHTML = "";
+        const tipo = tipoSelect.value;
+        const gen = generacionSelect.value;
 
-    const div = document.createElement("div");
-    div.classList.add("pokemon");
-    div.innerHTML = `
-    <p class="pokemon-id-back">#${pokeId}</p>
-    <div class="pokemon-imagen">
-        <img src="${poke.sprites.front_default}" alt="${poke.name}">
-    </div>
-    <div class="pokemon-info">
-        <div class="nombre-contenedor">
-            <p class="pokemon-id">#${pokeId}</p>
-            <h2 class="pokemon-nombre">${poke.name}</h2>
-        </div>
-    </div>
-    <div class="pokemon-tipos">
-    ${tipos}
-        <div class="pokemon-stats">
-            <p class="stat">${poke.height}m</p>
-            <p class="stat">${poke.weight}kg</p>
+        let pokeNamesTipo = [];
+        let pokeNamesGen = [];
 
-        </div>
-        <p class="stat">LV0 Stat: ${poke.stats[0].base_stat}</p
-        <p class="stat">LV1 Stat: ${poke.stats[1].base_stat}</p
-    </div>
-    `;
-    listaPokemon.append(div);
-}
+        if (tipo !== "all") {
+            const res = await fetch(`https://pokeapi.co/api/v2/type/${tipo}`);
+            const data = await res.json();
+            pokeNamesTipo = data.pokemon.map(p => p.pokemon.name);
+        }
 
-botonesHeader.forEach(boton => boton.addEventListener("click", (event) => {
-    const botonId = event.currentTarget.id;
+        if (gen !== "all") {
+            const res = await fetch(`https://pokeapi.co/api/v2/generation/${gen}`);
+            const data = await res.json();
+            pokeNamesGen = data.pokemon_species.map(s => s.name);
+        }
 
-    listaPokemon.innerHTML = "";
+        let pokemonsFinal = [];
 
-    for (let i = 1; i<=1025; i++){
-        fetch(URL + i)
-            .then((response) => response.json())
-            .then(data => {
-                if(botonId === "ver-todos"){
-                    mostrarPokemon(data);
-                }else{
-                    const tipos = data.types.map(type => type.type.name);
-                    if (tipos.some(tipo => tipo.includes(botonId))) {
-                        mostrarPokemon(data);
-                    }   
-                }
-        })
+        if (tipo === "all" && gen === "all") {
+            pokemonsFinal = Array.from({ length: 151 }, (_, i) => i + 1); 
+        } else if (tipo !== "all" && gen === "all") {
+            pokemonsFinal = pokeNamesTipo;
+        } else if (tipo === "all" && gen !== "all") {
+            pokemonsFinal = pokeNamesGen;
+        } else {
+            pokemonsFinal = pokeNamesTipo.filter(name => pokeNamesGen.includes(name));
+        }
+
+        const pokemonsData = [];
+
+        for (let poke of pokemonsFinal) {
+            let url = typeof poke === "number"
+                ? `https://pokeapi.co/api/v2/pokemon/${poke}`
+                : `https://pokeapi.co/api/v2/pokemon/${poke}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            pokemonsData.push(data);
+        }
+
+        pokemonsData.sort((a, b) => a.id - b.id);
+
+        pokemonsData.forEach(poke => mostrarPokemon(poke));
     }
 
-}))
+    tipoSelect.addEventListener("change", cargarFiltrado);
+    generacionSelect.addEventListener("change", cargarFiltrado);
+
+    cargarFiltrado(); 
+};

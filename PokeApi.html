@@ -64,15 +64,16 @@ header{
     background-color: var(---clr-navbackground);
 }
 
-.navegacion{
+.navegacion {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
+    flex-direction: row;      /* ⚡ cambia a fila horizontal */
+    align-items: center;      /* ⚡ alinea verticalmente centrado */
+    justify-content: space-between;  /* ⚡ separa logo y filtros */
+    flex-wrap: wrap;          /* ⚡ si la pantalla es chica, se acomoda abajo */
+    gap: 2rem;
     padding-inline: 1rem;
     max-width: 1000px;
     margin: auto;
-
 }
 
 .lista-navegacion{
@@ -320,130 +321,33 @@ main{
 </head>
 <body>    
     <header>
-    <nav class="navegacion">
-        <img class="logo" src="https://static.vecteezy.com/system/resources/previews/027/127/571/non_2x/pokemon-logo-pokemon-icon-transparent-free-png.png" alt="inicio">
-        <ul class="lista-navegacion">
-            <li class="nav-item"><button class="btn btn-header" id="ver-todos" >Ver todos</button></li>
-            <li class="nav-item"><button class="btn btn-header normal" id="normal" >normal</button></li>
-            <li class="nav-item"><button class="btn btn-header fire" id="fire" >fire</button></li>
-            <li class="nav-item"><button class="btn btn-header water" id="water" >water</button></li>
-            <li class="nav-item"><button class="btn btn-header grass" id="grass" >grass</button></li>
-            <li class="nav-item"><button class="btn btn-header electric" id="electric">electric</button></li>
-            <li class="nav-item"><button class="btn btn-header ice" id="ice" >ice</button></li>
-            <li class="nav-item"><button class="btn btn-header fighting" id="fighting">fighting</button></li>
-            <li class="nav-item"><button class="btn btn-header poison" id="poison" >poison</button></li>
-            <li class="nav-item"><button class="btn btn-header ground" id="ground" >ground</button></li>
-            <li class="nav-item"><button class="btn btn-header flying" id="flying" >flying</button></li>
-            <li class="nav-item"><button class="btn btn-header psychic" id="psychic" >psychic</button></li>
-            <li class="nav-item"><button class="btn btn-header bug" id="bug" >bug</button></li>
-            <li class="nav-item"><button class="btn btn-header rock" id="rock" >rock</button></li>
-            <li class="nav-item"><button class="btn btn-header ghost" id="ghost" >ghost</button></li>
-            <li class="nav-item"><button class="btn btn-header dark" id="dark" >dark</button></li>
-            <li class="nav-item"><button class="btn btn-header dragon" id="dragon" >dragon</button></li>
-            <li class="nav-item"><button class="btn btn-header steel" id="steel" >steel</button></li>
-            <li class="nav-item"><button class="btn btn-header fairy" id="fairy" >fairy</button></li>
-        </ul>
-    </nav>
+        <nav class="navegacion">
+            <img class="logo" src="https://static.vecteezy.com/system/resources/previews/027/127/571/non_2x/pokemon-logo-pokemon-icon-transparent-free-png.png" alt="inicio">
+        
+            <div class="filtro-item">
+                <label for="tipoSelect">Filtrar por tipo:</label>
+                <select id="tipoSelect">
+                    <option value="all">Todos</option>
+                </select>
+            </div>
+        
+            <div class="filtro-item">
+                <label for="generacionSelect">Filtrar por generación:</label>
+                <select id="generacionSelect">
+                    <option value="all">Todas</option>
+                </select>
+            </div>
+        </nav>
+        
+        
     </header>
     <main>
         <div id="todos">
-            <div class="pokemon-todos" id="listaPokemon">
-                <!-- <div class="pokemon">
-                    <p class="pokemon-id-back">#244</p>
-                    <div class="pokemon-imagen">
-                        <img src="https://pa1.narvii.com/5799/88ce7b4cb60053f757da9e9f5320bb8a469b75f9_hq.gif" alt="">
-                    </div>h
-                    <div class="pokemon-info">
-                        <div class="nombre-contenedor">
-                            <p class="pokemon-id">#223</p>
-                            <h2 class="pokemon-nombre">Eeee</h2>
-                        </div>
-                    </div>
-                    <div class="pokemon-tipos">
-                        <p class="tipo">electric</p>
-                        <p class="tipo">electric</p>
-                        <div class="pokemon-stats">
-                            <p class="stat">4m</p>
-                            <p class="stat">60kg</p>
-                        </div>
-                    </div>
-                </div> -->
-            </div>
+            <div class="pokemon-todos" id="listaPokemon"></div>
         </div>
     </main>
-    <script >
-        const listaPokemon = document.querySelector("#listaPokemon");
-const botonesHeader = document.querySelectorAll(".btn-header");
-let URL = "https://pokeapi.co/api/v2/pokemon/";
 
-for (let i = 1; i<=1025; i++){
-    fetch (URL+ i)
-    .then((response) => response.json())
-    .then(data => mostrarPokemon(data))
-}
-
-function mostrarPokemon(poke){
-    let tipos = poke.types.map((type) => `<p class="${type.type.name} tipo">${type.type.name}</p>`);
-    tipos = tipos.join('')
-    console.log(poke);
-    
-    let pokeId = poke.id.toString();
-    if(pokeId.length === 1){
-        pokeId ="00" + pokeId;
-    } else if (pokeId.length ===2){
-        pokeId = "0" + pokeId
-    }
-
-
-    const div = document.createElement("div");
-    div.classList.add("pokemon");
-    div.innerHTML = `
-    <p class="pokemon-id-back">#${pokeId}</p>
-    <div class="pokemon-imagen">
-        <img src="${poke.sprites.front_default}" alt="${poke.name}">
-    </div>
-    <div class="pokemon-info">
-        <div class="nombre-contenedor">
-            <p class="pokemon-id">#${pokeId}</p>
-            <h2 class="pokemon-nombre">${poke.name}</h2>
-        </div>
-    </div>
-    <div class="pokemon-tipos">
-    ${tipos}
-        <div class="pokemon-stats">
-            <p class="stat">${poke.height}m</p>
-            <p class="stat">${poke.weight}kg</p>
-
-        </div>
-        <p class="stat">LV0 Stat: ${poke.stats[0].base_stat}</p
-        <p class="stat">LV1 Stat: ${poke.stats[1].base_stat}</p
-    </div>
-    `;
-    listaPokemon.append(div);
-}
-
-botonesHeader.forEach(boton => boton.addEventListener("click", (event) => {
-    const botonId = event.currentTarget.id;
-
-    listaPokemon.innerHTML = "";
-
-    for (let i = 1; i<=1025; i++){
-        fetch(URL + i)
-            .then((response) => response.json())
-            .then(data => {
-                if(botonId === "ver-todos"){
-                    mostrarPokemon(data);
-                }else{
-                    const tipos = data.types.map(type => type.type.name);
-                    if (tipos.some(tipo => tipo.includes(botonId))) {
-                        mostrarPokemon(data);
-                    }   
-                }
-        })
-    }
-
-}))
-
-    </script>
+    <!-- Enlaza el JS externo -->
+    <script src="PokeApi.js"></script>
 </body>
 </html>
