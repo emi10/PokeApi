@@ -118,10 +118,11 @@ main{
     position: relative;
 }
 
-.pokemon-todos{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: .5rem;
+.pokemon-todos {
+  display: grid;
+  /* Cada carta tendrá un ancho mínimo de 180px y crecerá para llenar el espacio */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: .5rem;
 }
 
 .pokemon{
@@ -316,6 +317,39 @@ main{
     0% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
     100% { transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+  .pokemon-todos {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+
+/* Pantallas ≤ 768px (móvil horizontal / tablet pequeña) */
+@media (max-width: 768px) {
+  .pokemon-todos {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+  .pokemon-nombre {
+    font-size: 1.1rem;
+  }
+}
+
+/* Pantallas ≤ 480px (móvil vertical) */
+@media (max-width: 480px) {
+  .pokemon-todos {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pokemon-nombre {
+    font-size: 1rem;
+  }
+  .pokemon-stats {
+    flex-direction: column;
+    gap: .25rem;
+  }
+  .pokemon-imagen img {
+    max-width: 4rem;
+  }
 }
     </style>
 </head>
