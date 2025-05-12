@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POKEEAPI</title>
+    <title>POKE API</title>
     <style>
         @import url();
 
@@ -316,6 +316,52 @@ main{
     50% { transform: translateY(-5px); }
     100% { transform: translateY(0); }
 }
+
+  /* Estilo solo para la barra de busqueda */
+  #searchBar {
+    padding: 10px 15px;
+    font-size: 1rem;
+    width: 280px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+    outline: none;
+    margin-bottom: 1rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #result {
+    background-color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  #result h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #ef5350;
+  }
+
+  #result img {
+    margin-top: 0.8rem;
+    width: 120px;
+    height: auto;
+  }
+
+  #result p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: #444;
+  }
+
+  /* Estilo solo para la barra de busqueda (Final)*/
+
     </style>
 </head>
 <body>    
@@ -343,6 +389,10 @@ main{
             <li class="nav-item"><button class="btn btn-header steel" id="steel" >steel</button></li>
             <li class="nav-item"><button class="btn btn-header fairy" id="fairy" >fairy</button></li>
         </ul>
+
+  <input type="text" id="searchBar" placeholder="Buscar Pokémon por nombre..." />
+
+
     </nav>
     </header>
     <main>

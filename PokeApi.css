@@ -3,8 +3,7 @@
 :root{
     ---clr-black: #1c1c1c1c;
     ---clr-gray: #ececec;
-    ---clr-white: #f7f7f7;
-
+    ---clr-white: #f7f7f7; 
     --type-normal: #A8A878;
     --type-fire: #F08030;
     --type-water: #6890F0;
@@ -23,6 +22,27 @@
     --type-dragon: #7038F8;
     --type-steel: #B8B8D0;
     --type-fairy: #F0B6BC;
+}
+
+.searchBar{
+  padding: 100px 15px;
+  font-size: 1rem;
+  width: 400px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  outline: none;
+  margin-bottom: 1rem;
+}
+.result{
+  padding: 10px 15px;
+  font-size: 1rem;
+  width: 400px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  outline: none;
+  margin-bottom: 1rem;
 }
 
 *{

@@ -48,6 +48,7 @@ function mostrarPokemon(poke){
     listaPokemon.append(div);
 }
 
+
 botonesHeader.forEach(boton => boton.addEventListener("click", (event) => {
     const botonId = event.currentTarget.id;
 
