@@ -3,6 +3,10 @@ window.onload = function () {
     const generacionSelect = document.querySelector("#generacionSelect");
     const listaPokemon = document.querySelector("#listaPokemon");
 
+    const contenedorNombre = document.querySelector('#searchBar');
+    let idNombreFile;
+    let debounceTimer;
+
     // Cargar tipos
     fetch("https://pokeapi.co/api/v2/type/")
         .then(res => res.json())
@@ -61,9 +65,28 @@ window.onload = function () {
         listaPokemon.innerHTML = "";
         const tipo = tipoSelect.value;
         const gen = generacionSelect.value;
+        const name = contenedorNombre.value.trim().toLowerCase();
+
 
         let pokeNamesTipo = [];
         let pokeNamesGen = [];
+
+        
+        if (name !== "") {
+            try {
+                const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+                if (!res.ok) throw new Error("Pokémon no encontrado");
+                const data = await res.json();
+                mostrarPokemon(data);
+                return; 
+            } catch (err) {
+                div.classList.add("pokemon");
+        div.innerHTML = `<p class="pokemon-id-back">Pokemon no encontrado</p>`;
+                return;
+            }
+        }
+
+        let pokemonsFinal = [];
 
         if (tipo !== "all") {
             const res = await fetch(`https://pokeapi.co/api/v2/type/${tipo}`);
@@ -77,10 +100,9 @@ window.onload = function () {
             pokeNamesGen = data.pokemon_species.map(s => s.name);
         }
 
-        let pokemonsFinal = [];
 
         if (tipo === "all" && gen === "all") {
-            pokemonsFinal = Array.from({ length: 151 }, (_, i) => i + 1); 
+            pokemonsFinal = Array.from({ length: 151 }, (_, i) => i + 1);
         } else if (tipo !== "all" && gen === "all") {
             pokemonsFinal = pokeNamesTipo;
         } else if (tipo === "all" && gen !== "all") {
@@ -108,5 +130,26 @@ window.onload = function () {
     tipoSelect.addEventListener("change", cargarFiltrado);
     generacionSelect.addEventListener("change", cargarFiltrado);
 
-    cargarFiltrado(); 
+    cargarFiltrado();
+
+
+    // BUSQUEDA POR SU ID NAME
+
+
+
+    if (contenedorNombre) {
+        contenedorNombre.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+
+            debounceTimer = setTimeout(() => {
+                idNombreFile = contenedorNombre.value.replace(/\s/g, "-");
+                console.log("Valor actualizado: " + idNombreFile);
+                cargarFiltrado()
+            }, 500);
+        });
+    }
 };
+
+// function PokemonSearch(name){
+//     name = idNombreFile;
+// }
