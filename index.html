@@ -66,10 +66,17 @@ header{
 
 .navegacion {
     display: flex;
+<<<<<<< HEAD:PokeApi.html
     flex-direction: row;      /* ⚡ cambia a fila horizontal */
     align-items: center;      /* ⚡ alinea verticalmente centrado */
     justify-content: space-between;  /* ⚡ separa logo y filtros */
     flex-wrap: wrap;          /* ⚡ si la pantalla es chica, se acomoda abajo */
+=======
+    flex-direction: row;      
+    align-items: center;      
+    justify-content: flex-start;
+    flex-wrap: nowrap;          
+>>>>>>> 9ab3f27733bed9ee537ecdc68a9b27c0cfd10068:index.html
     gap: 2rem;
     padding-inline: 1rem;
     max-width: 1000px;
@@ -187,6 +194,8 @@ main{
 
 .pokemon-stats{
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1rem;
     font-size: .85rem;
 }
@@ -310,7 +319,12 @@ main{
     width: 17%;
     filter: drop-shadow(0 2px 5px rgba(0, 0, 0, .25)); 
     margin-bottom: 0; 
+}
 
+.ContainerNav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;    
 }
 
 @keyframes movimiento {
@@ -319,6 +333,54 @@ main{
     100% { transform: translateY(0); }
 }
 
+<<<<<<< HEAD:PokeApi.html
+=======
+ /* Estilo solo para la barra de busqueda */
+  #searchBar {
+    padding: 10px 15px;
+    font-size: 1rem;
+    width: 280px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+    outline: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #result {
+    background-color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  #result h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #ef5350;
+  }
+
+  #result img {
+    margin-top: 0.8rem;
+    width: 120px;
+    height: auto;
+  }
+
+  #result p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: #444;
+  }
+
+  /* Estilo solo para la barra de busqueda (Final)*/
+
+
+>>>>>>> 9ab3f27733bed9ee537ecdc68a9b27c0cfd10068:index.html
 @media (max-width: 1024px) {
   .pokemon-todos {
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -356,6 +418,7 @@ main{
 <body>    
     <header>
         <nav class="navegacion">
+<<<<<<< HEAD:PokeApi.html
             <img class="logo" src="https://static.vecteezy.com/system/resources/previews/027/127/571/non_2x/pokemon-logo-pokemon-icon-transparent-free-png.png" alt="inicio">
         
             <div class="filtro-item">
@@ -370,6 +433,27 @@ main{
                 <select id="generacionSelect">
                     <option value="all">Todas</option>
                 </select>
+=======
+            <div class="ContainerNav">
+                <img class="logo" src="https://static.vecteezy.com/system/resources/previews/027/127/571/non_2x/pokemon-logo-pokemon-icon-transparent-free-png.png" alt="inicio">
+            
+                <div class="filtro-item">
+                    <label for="tipoSelect">Filtrar por<br>tipo:</label>
+                    <select id="tipoSelect">
+                        <option value="all">Todos</option>
+                    </select>
+                </div>
+            
+                <div class="filtro-item">
+                    <label for="generacionSelect">Filtrar por<br>generación:</label>
+                    <select id="generacionSelect">
+                        <option value="all">Todas</option>
+                    </select>
+                </div>
+                <div class="searchBar">
+                    <input type="text" id="searchBar" placeholder="Buscar Pokémon por nombre..." />
+                </div>
+>>>>>>> 9ab3f27733bed9ee537ecdc68a9b27c0cfd10068:index.html
             </div>
         </nav>
         

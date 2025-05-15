@@ -109,4 +109,8 @@ window.onload = function () {
     generacionSelect.addEventListener("change", cargarFiltrado);
 
     cargarFiltrado(); 
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 9ab3f27733bed9ee537ecdc68a9b27c0cfd10068
